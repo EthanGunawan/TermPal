@@ -1,9 +1,71 @@
-<?xml version="1.0" encoding="utf-8"?>
-
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="TermPal.TermDetailsPage">
-    <ContentPage.Content>
-        
-    </ContentPage.Content>
+             x:Class="TermPal.TermDetailsPage"
+             Title="Term Details">
+
+    <Grid RowDefinitions="Auto, Auto, *, Auto">
+        <!-- Term Title -->
+        <Label Grid.Row="0"
+               x:Name="TermTitleLabel"
+               Text="Semester Title"
+               FontSize="28"
+               FontAttributes="Bold"
+               HorizontalOptions="Center"
+               Margin="0,20,0,10" />
+
+        <!-- Courses Header -->
+        <Label Grid.Row="1"
+               Text="Courses"
+               FontSize="18"
+               FontAttributes="Bold"
+               Margin="10,0,0,10" />
+
+        <!-- Courses CollectionView -->
+        <CollectionView Grid.Row="2"
+                        ItemsSource="{Binding Courses}"
+                        x:Name="CoursesCollectionView"
+                        Margin="10">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Border Margin="10"
+                            Padding="15"
+                            StrokeThickness="0"
+                            BackgroundColor="#F5F5F5">
+                        <VerticalStackLayout Spacing="5">
+                            <Label Text="{Binding Title}"
+                                   FontSize="18"
+                                   FontAttributes="Bold" />
+                            <Label Text="{Binding Room}"
+                                   FontSize="14"
+                                   TextColor="Gray" />
+                            <Label Text="{Binding Professor}"
+                                   FontSize="14"
+                                   TextColor="Gray" />
+                            <Label Text="{Binding Days}"
+                                   FontSize="14"
+                                   TextColor="Gray" />
+                            <Label Text="{Binding Time}"
+                                   FontSize="14"
+                                   TextColor="Gray" />
+                        </VerticalStackLayout>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- Add Course Button -->
+        <Button Grid.Row="3"
+                x:Name="AddCourseButton"
+                Text="+ Add Course"
+                Clicked="OnAddCourseButtonClicked"
+                BackgroundColor="#4A90E2"
+                TextColor="White"
+                FontSize="16"
+                Padding="15"
+                Margin="10"
+                CornerRadius="8"
+                HorizontalOptions="Center" />
+    </Grid>
+
 </ContentPage>
