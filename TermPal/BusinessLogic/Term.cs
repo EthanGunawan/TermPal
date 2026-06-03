@@ -7,7 +7,16 @@ public class Term
     public int Id { get; set; }
     public string Title { get; set; } = string.Empty;
 
-    // Use ObservableCollection instead of List
+    // New: start/end dates of the semester
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
+
+    // For UI: e.g., "Sep 05, 2026 - Dec 20, 2026"
+    public string DateRange =>
+        StartDate != default && EndDate != default
+            ? $"{StartDate:MMM dd, yyyy} - {EndDate:MMM dd, yyyy}"
+            : string.Empty;
+
     public ObservableCollection<Course> Courses { get; set; } = new ObservableCollection<Course>();
 
     public void AddCourse(Course course)

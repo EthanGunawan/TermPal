@@ -32,12 +32,14 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
             {
                 _termId = id;
                 _currentTerm = App.TermManager.GetTerm(_termId);
-                if (_currentTerm != null)
-                {
-                    TermTitleLabel.Text = _currentTerm.Title;
-                    CoursesCollectionView.ItemsSource = _currentTerm.Courses;
-                }
             }
+        }
+
+        if (_currentTerm != null)
+        {
+            TermTitleLabel.Text      = _currentTerm.Title;
+            TermDateRangeLabel.Text  = _currentTerm.DateRange;
+            CoursesCollectionView.ItemsSource = _currentTerm.Courses;
         }
     }
 

@@ -5,20 +5,35 @@ public partial class MainPage : ContentPage
     public MainPage()
     {
         InitializeComponent();
-        BindingContext = App.TermManager; // bind to TermManager.Terms
+        BindingContext = App.TermManager;
     }
 
     private async void OnAddTermButtonClicked(object sender, EventArgs e)
     {
-        // Add mode (no termId)
+        // Add mode
         await Shell.Current.GoToAsync(nameof(AddTermPage));
+    }
+
+    private async void TermsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (e.CurrentSelection.Count > 0)
+        {
+            var selectedItem = e.CurrentSelection[0];
+            if (selectedItem is BusinessLogic.Term term)
+            {
+                // Tap: open TermDetailsPage
+                await Shell.Current.GoToAsync($"{nameof(TermDetailsPage)}?termId={term.Id}");
+            }
+        }
+
+        ((CollectionView)sender).SelectedItem = null;
     }
 
     private async void OnEditTermSwipeInvoked(object sender, EventArgs e)
     {
         if (sender is SwipeItem swipeItem && swipeItem.BindingContext is BusinessLogic.Term term)
         {
-            // Edit mode: navigate to AddTermPage with termId
+            // Edit mode: open AddTermPage with termId
             await Shell.Current.GoToAsync($"{nameof(AddTermPage)}?termId={term.Id}");
         }
     }
@@ -36,20 +51,5 @@ public partial class MainPage : ContentPage
 
             App.TermManager.DeleteTerm(term.Id);
         }
-    }
-
-    private async void TermsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        if (e.CurrentSelection.Count > 0)
-        {
-            var selectedItem = e.CurrentSelection[0];
-            if (selectedItem is BusinessLogic.Term term)
-            {
-                // Tap: open TermDetailsPage
-                await Shell.Current.GoToAsync($"{nameof(TermDetailsPage)}?termId={term.Id}");
-            }
-        }
-
-        ((CollectionView)sender).SelectedItem = null;
     }
 }

@@ -10,15 +10,17 @@ public class TermManager
 
     public ObservableCollection<Term> Terms => _terms;
 
-    public Term AddTerm(string title)
+    public Term AddTerm(string title, DateTime startDate, DateTime endDate)
     {
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Term title cannot be empty", nameof(title));
 
         var term = new Term
         {
-            Id = _nextTermId++,
-            Title = title
+            Id        = _nextTermId++,
+            Title     = title,
+            StartDate = startDate,
+            EndDate   = endDate
         };
         _terms.Add(term);
         return term;

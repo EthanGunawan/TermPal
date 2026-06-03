@@ -35,7 +35,14 @@ public partial class AddTermPage : ContentPage, IQueryAttributable
 
                 if (_currentTerm != null)
                 {
+                    // Edit mode: pre-fill fields
                     TitleEntry.Text = _currentTerm.Title;
+
+                    if (_currentTerm.StartDate != default)
+                        StartDatePicker.Date = _currentTerm.StartDate;
+                    if (_currentTerm.EndDate != default)
+                        EndDatePicker.Date = _currentTerm.EndDate;
+
                     Title = "Edit Semester";
                     SaveTermButton.Text = "Update";
                 }
@@ -44,8 +51,13 @@ public partial class AddTermPage : ContentPage, IQueryAttributable
 
         if (_currentTerm == null)
         {
+            // Add mode defaults
             Title = "Add Semester";
             SaveTermButton.Text = "Save";
+
+            var today = DateTime.Today;
+            StartDatePicker.Date = today;
+            EndDatePicker.Date   = today.AddMonths(4);
         }
     }
 
@@ -62,15 +74,50 @@ public partial class AddTermPage : ContentPage, IQueryAttributable
             return;
         }
 
+        if (EndDatePicker.Date < StartDatePicker.Date)
+        {
+            await DisplayAlert("Error", "End date must be on or after the start date.", "OK");
+            return;
+        }
+
         if (_currentTerm == null)
         {
-            // Add mode
-            App.TermManager.AddTerm(TitleEntry.Text);
+            // Add mode: create term with dates set immediately
+            App.TermManager.AddTerm(
+                TitleEntry.Text,
+                StartDatePicker.Date,
+                EndDatePicker.Date);
         }
         else
         {
-            // Edit mode
-            App.TermManager.EditTerm(_termId, TitleEntry.Text);
+            // Edit mode: replace term in collection so CollectionView refreshes
+            var manager = App.TermManager;
+            var terms   = manager.Terms;
+
+            int index = -1;
+            for (int i = 0; i < terms.Count; i++)
+            {
+                if (terms[i].Id == _currentTerm.Id)
+                {
+                    index = i;
+                    break;
+                }
+            }
+
+            if (index >= 0)
+            {
+                var updatedTerm = new Term
+                {
+                    Id        = _currentTerm.Id,
+                    Title     = TitleEntry.Text,
+                    StartDate = StartDatePicker.Date,
+                    EndDate   = EndDatePicker.Date,
+                    Courses   = _currentTerm.Courses  // keep existing courses
+                };
+
+                terms[index] = updatedTerm;
+                _currentTerm = updatedTerm;
+            }
         }
 
         await Shell.Current.GoToAsync("..");

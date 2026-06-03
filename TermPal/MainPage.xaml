@@ -23,7 +23,7 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <SwipeView>
-                        <!-- Swipe from left: Edit term -->
+                        <!-- Left swipe: Edit -->
                         <SwipeView.LeftItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem Text="Edit"
@@ -32,7 +32,7 @@
                             </SwipeItems>
                         </SwipeView.LeftItems>
 
-                        <!-- Swipe from right: Delete term -->
+                        <!-- Right swipe: Delete -->
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem Text="Delete"
@@ -46,10 +46,16 @@
                                 Padding="20"
                                 StrokeThickness="0"
                                 BackgroundColor="#F5F5F5">
-                            <Label Text="{Binding Title}"
-                                   FontSize="20"
-                                   FontAttributes="Bold"
-                                   HorizontalOptions="Center" />
+                            <VerticalStackLayout Spacing="2">
+                                <Label Text="{Binding Title}"
+                                       FontSize="20"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center" />
+                                <Label Text="{Binding DateRange}"
+                                       FontSize="12"
+                                       TextColor="Black"
+                                       HorizontalOptions="Center" />
+                            </VerticalStackLayout>
                         </Border>
                     </SwipeView>
                 </DataTemplate>
