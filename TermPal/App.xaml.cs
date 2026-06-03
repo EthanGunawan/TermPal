@@ -1,10 +1,8 @@
-﻿using TermPal.BusinessLogic;
-
-namespace TermPal;
+﻿namespace TermPal;
 
 public partial class App : Application
 {
-    public static TermManager TermManager { get; private set; }
+    public static TermPal.BusinessLogic.TermManager TermManager { get; private set; }
 
     public App()
     {

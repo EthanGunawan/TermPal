@@ -15,22 +15,18 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
     // Called automatically when navigating with ...?termId=123
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
-        if (query == null)
-            return;
+        _termId = 0;
+        _currentTerm = null;
 
-        if (query.ContainsKey("termId"))
+        if (query != null && query.ContainsKey("termId"))
         {
             object value = query["termId"];
             int id = 0;
 
             if (value is int intValue)
-            {
                 id = intValue;
-            }
             else if (value is string stringValue && int.TryParse(stringValue, out int parsed))
-            {
                 id = parsed;
-            }
 
             if (id > 0)
             {
@@ -49,12 +45,33 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
     {
         if (_currentTerm == null)
         {
-            await DisplayAlert("Error", "No term selected", "OK");
+            await DisplayAlert("Error", "No term selected.", "OK");
             return;
         }
 
+        // Add mode: termId only
         await Shell.Current.GoToAsync($"{nameof(AddCoursePage)}?termId={_currentTerm.Id}");
     }
+
+    private async void CoursesCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        if (_currentTerm == null)
+            return;
+
+        if (e.CurrentSelection.Count > 0)
+        {
+            var selectedItem = e.CurrentSelection[0];
+            if (selectedItem is Course course)
+            {
+                // Edit mode: termId + courseId
+                await Shell.Current.GoToAsync(
+                    $"{nameof(AddCoursePage)}?termId={_currentTerm.Id}&courseId={course.Id}");
+            }
+        }
+
+        ((CollectionView)sender).SelectedItem = null;
+    }
+
     private async void OnDeleteCourseSwipeInvoked(object sender, EventArgs e)
     {
         if (_currentTerm == null)
@@ -70,7 +87,7 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
                 return;
 
             _currentTerm.DeleteCourse(course.Id);
-            // Courses is ObservableCollection, so UI updates automatically
+            // Courses is ObservableCollection, UI updates automatically
         }
     }
 }

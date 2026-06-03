@@ -23,6 +23,16 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <SwipeView>
+                        <!-- Swipe from left: Edit term -->
+                        <SwipeView.LeftItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Edit"
+                                           BackgroundColor="DodgerBlue"
+                                           Invoked="OnEditTermSwipeInvoked" />
+                            </SwipeItems>
+                        </SwipeView.LeftItems>
+
+                        <!-- Swipe from right: Delete term -->
                         <SwipeView.RightItems>
                             <SwipeItems Mode="Execute">
                                 <SwipeItem Text="Delete"
@@ -31,6 +41,7 @@
                             </SwipeItems>
                         </SwipeView.RightItems>
 
+                        <!-- Main content (tap = open TermDetailsPage) -->
                         <Border Margin="10"
                                 Padding="20"
                                 StrokeThickness="0"
@@ -44,6 +55,7 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+
         <!-- Add Term Button -->
         <Button Grid.Row="2"
                 x:Name="AddTermButton"

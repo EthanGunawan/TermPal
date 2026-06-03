@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TermPal.AddTermPage"
-             Title="Add Semester">
+             Title="Semester">
 
     <VerticalStackLayout Padding="20" Spacing="20">
         <Label Text="Semester Title"
@@ -11,7 +11,7 @@
                Margin="0,0,0,10" />
 
         <Entry x:Name="TitleEntry"
-               Placeholder="Enter semester title (e.g., Fall 2026)"
+               Placeholder="e.g., Fall 2026"
                FontSize="18" />
 
         <HorizontalStackLayout Spacing="10"
@@ -26,7 +26,7 @@
                     Padding="20,10"
                     CornerRadius="8" />
             <Button x:Name="SaveTermButton"
-                    Text="Save Semester"
+                    Text="Save"
                     Clicked="OnSaveTermButtonClicked"
                     BackgroundColor="#4A90E2"
                     TextColor="White"

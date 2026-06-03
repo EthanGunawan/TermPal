@@ -15,10 +15,10 @@ public class TermManager
         if (string.IsNullOrWhiteSpace(title))
             throw new ArgumentException("Term title cannot be empty", nameof(title));
 
-        var term = new Term 
-        { 
+        var term = new Term
+        {
             Id = _nextTermId++,
-            Title = title 
+            Title = title
         };
         _terms.Add(term);
         return term;
@@ -35,6 +35,7 @@ public class TermManager
                 break;
             }
         }
+
         if (term == null)
             return false;
 
@@ -56,6 +57,7 @@ public class TermManager
                 break;
             }
         }
+
         if (term == null)
             return false;
 
@@ -70,6 +72,7 @@ public class TermManager
             if (_terms[i].Id == termId)
                 return _terms[i];
         }
+
         return null;
     }
 

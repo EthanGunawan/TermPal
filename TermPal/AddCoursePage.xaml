@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TermPal.AddCoursePage"
-             Title="Add Course">
+             Title="Course">
 
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="15">
@@ -81,7 +81,7 @@
                         Padding="20,10"
                         CornerRadius="8" />
                 <Button x:Name="SaveCourseButton"
-                        Text="Save Course"
+                        Text="Save"
                         Clicked="OnSaveCourseButtonClicked"
                         BackgroundColor="#4A90E2"
                         TextColor="White"

@@ -24,6 +24,8 @@
         <!-- Courses CollectionView -->
         <CollectionView Grid.Row="2"
                         x:Name="CoursesCollectionView"
+                        SelectionMode="Single"
+                        SelectionChanged="CoursesCollectionView_SelectionChanged"
                         Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
