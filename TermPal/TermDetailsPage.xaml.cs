@@ -89,7 +89,6 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
                 return;
 
             _currentTerm.DeleteCourse(course.Id);
-            // Courses is ObservableCollection, UI updates automatically
         }
     }
 }

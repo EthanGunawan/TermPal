@@ -120,12 +120,12 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
         var updatedCourse = new Course
         {
             CourseCode = CourseCodeEntry.Text,
-            Title      = TitleEntry.Text,
-            Room       = RoomEntry.Text,
-            Professor  = ProfessorEntry.Text,
-            Days       = DaysEntry.Text,
-            StartTime  = StartTimePicker.Time,
-            EndTime    = EndTimePicker.Time
+            Title = TitleEntry.Text,
+            Room = RoomEntry.Text,
+            Professor = ProfessorEntry.Text,
+            Days = DaysEntry.Text,
+            StartTime = StartTimePicker.Time,
+            EndTime = EndTimePicker.Time
         };
 
         var term = App.TermManager.GetTerm(_termId);
@@ -137,13 +137,11 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
 
         if (_currentCourse == null)
         {
-            // Add mode
             App.TermManager.AddCourseToTerm(_termId, updatedCourse);
         }
         else
         {
-            // Edit mode
-            term.EditCourse(_courseId, updatedCourse);
+            App.TermManager.EditCourse(_termId, _courseId, updatedCourse);
         }
 
         await Shell.Current.GoToAsync("..");

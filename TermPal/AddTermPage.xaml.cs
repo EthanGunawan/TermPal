@@ -82,7 +82,6 @@ public partial class AddTermPage : ContentPage, IQueryAttributable
 
         if (_currentTerm == null)
         {
-            // Add mode: create term with dates set immediately
             App.TermManager.AddTerm(
                 TitleEntry.Text,
                 StartDatePicker.Date,
@@ -90,34 +89,11 @@ public partial class AddTermPage : ContentPage, IQueryAttributable
         }
         else
         {
-            // Edit mode: replace term in collection so CollectionView refreshes
-            var manager = App.TermManager;
-            var terms   = manager.Terms;
-
-            int index = -1;
-            for (int i = 0; i < terms.Count; i++)
-            {
-                if (terms[i].Id == _currentTerm.Id)
-                {
-                    index = i;
-                    break;
-                }
-            }
-
-            if (index >= 0)
-            {
-                var updatedTerm = new Term
-                {
-                    Id        = _currentTerm.Id,
-                    Title     = TitleEntry.Text,
-                    StartDate = StartDatePicker.Date,
-                    EndDate   = EndDatePicker.Date,
-                    Courses   = _currentTerm.Courses  // keep existing courses
-                };
-
-                terms[index] = updatedTerm;
-                _currentTerm = updatedTerm;
-            }
+            App.TermManager.EditTerm(
+                _currentTerm.Id,
+                TitleEntry.Text,
+                StartDatePicker.Date,
+                EndDatePicker.Date);
         }
 
         await Shell.Current.GoToAsync("..");
