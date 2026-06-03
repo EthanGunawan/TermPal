@@ -50,6 +50,12 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
             return;
         }
 
+        if (string.IsNullOrWhiteSpace(CourseCodeEntry.Text))
+        {
+            await DisplayAlert("Error", "Please enter a course code.", "OK");
+            return;
+        }
+
         if (string.IsNullOrWhiteSpace(TitleEntry.Text))
         {
             await DisplayAlert("Error", "Please enter a course title.", "OK");
@@ -62,13 +68,22 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
             return;
         }
 
-        var course = new Course
+        // Optional: basic check that end is after start
+        if (EndTimePicker.Time <= StartTimePicker.Time)
         {
+            await DisplayAlert("Error", "End time must be after start time.", "OK");
+            return;
+        }
+
+        var course = new TermPal.BusinessLogic.Course
+        {
+            CourseCode = CourseCodeEntry.Text,
             Title = TitleEntry.Text,
             Room = RoomEntry.Text,
             Professor = ProfessorEntry.Text,
             Days = DaysEntry.Text,
-            Time = TimePicker.Time
+            StartTime = StartTimePicker.Time,
+            EndTime = EndTimePicker.Time
         };
 
         try
@@ -77,7 +92,6 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
         }
         catch (Exception ex)
         {
-            // Temporary debug alert so the app doesn't just crash
             await DisplayAlert("Error", ex.Message, "OK");
             return;
         }
