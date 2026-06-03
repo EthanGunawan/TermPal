@@ -27,37 +27,38 @@
                         Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
-                    <Border Margin="10"
-                            Padding="15"
-                            StrokeThickness="0"
-                            BackgroundColor="#F5F5F5">
-                        <VerticalStackLayout Spacing="3">
-                            <!-- Course code + title -->
-                            <Label Text="{Binding DisplayTitle}"
-                                   FontSize="18"
-                                   FontAttributes="Bold" />
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Delete"
+                                           BackgroundColor="IndianRed"
+                                           Invoked="OnDeleteCourseSwipeInvoked" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
 
-                            <!-- Room -->
-                            <Label Text="{Binding Room}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-
-                            <!-- Professor -->
-                            <Label Text="{Binding Professor}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-
-                            <!-- Days -->
-                            <Label Text="{Binding Days}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-
-                            <!-- Time range, e.g. 09:00-12:00 -->
-                            <Label Text="{Binding DisplayTimeRange}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-                        </VerticalStackLayout>
-                    </Border>
+                        <Border Margin="10"
+                                Padding="15"
+                                StrokeThickness="0"
+                                BackgroundColor="#F5F5F5">
+                            <VerticalStackLayout Spacing="3">
+                                <Label Text="{Binding DisplayTitle}"
+                                       FontSize="18"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding Room}"
+                                       FontSize="14"
+                                       TextColor="Gray" />
+                                <Label Text="{Binding Professor}"
+                                       FontSize="14"
+                                       TextColor="Gray" />
+                                <Label Text="{Binding Days}"
+                                       FontSize="14"
+                                       TextColor="Gray" />
+                                <Label Text="{Binding DisplayTimeRange}"
+                                       FontSize="14"
+                                       TextColor="Gray" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </SwipeView>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>

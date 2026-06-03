@@ -26,4 +26,19 @@ public partial class MainPage : ContentPage
         
         ((CollectionView)sender).SelectedItem = null;
     }
+    private async void OnDeleteTermSwipeInvoked(object sender, EventArgs e)
+    {
+        if (sender is SwipeItem swipeItem && swipeItem.BindingContext is BusinessLogic.Term term)
+        {
+            bool confirm = await DisplayAlert("Delete Term",
+                $"Delete semester \"{term.Title}\" and all its courses?",
+                "Delete", "Cancel");
+
+            if (!confirm)
+                return;
+
+            App.TermManager.DeleteTerm(term.Id);
+            // Terms is an ObservableCollection, so CollectionView will update automatically
+        }
+    }
 }

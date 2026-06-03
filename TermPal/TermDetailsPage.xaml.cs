@@ -55,4 +55,22 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
 
         await Shell.Current.GoToAsync($"{nameof(AddCoursePage)}?termId={_currentTerm.Id}");
     }
+    private async void OnDeleteCourseSwipeInvoked(object sender, EventArgs e)
+    {
+        if (_currentTerm == null)
+            return;
+
+        if (sender is SwipeItem swipeItem && swipeItem.BindingContext is Course course)
+        {
+            bool confirm = await DisplayAlert("Delete Course",
+                $"Delete course \"{course.DisplayTitle}\"?",
+                "Delete", "Cancel");
+
+            if (!confirm)
+                return;
+
+            _currentTerm.DeleteCourse(course.Id);
+            // Courses is ObservableCollection, so UI updates automatically
+        }
+    }
 }
