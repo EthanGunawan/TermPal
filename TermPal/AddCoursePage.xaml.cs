@@ -11,7 +11,6 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
         InitializeComponent();
     }
 
-    // Called automatically when navigating with ...?termId=123
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         if (query == null)
@@ -47,19 +46,19 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
     {
         if (_termId <= 0)
         {
-            await DisplayAlert("Error", "No term specified for this course", "OK");
+            await DisplayAlert("Error", "No semester was selected for this course.", "OK");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(TitleEntry.Text))
         {
-            await DisplayAlert("Error", "Please enter a course title", "OK");
+            await DisplayAlert("Error", "Please enter a course title.", "OK");
             return;
         }
 
         if (string.IsNullOrWhiteSpace(RoomEntry.Text))
         {
-            await DisplayAlert("Error", "Please enter a room number", "OK");
+            await DisplayAlert("Error", "Please enter a room number.", "OK");
             return;
         }
 
@@ -72,7 +71,17 @@ public partial class AddCoursePage : ContentPage, IQueryAttributable
             Time = TimePicker.Time
         };
 
-        App.TermManager.AddCourseToTerm(_termId, course);
+        try
+        {
+            App.TermManager.AddCourseToTerm(_termId, course);
+        }
+        catch (Exception ex)
+        {
+            // Temporary debug alert so the app doesn't just crash
+            await DisplayAlert("Error", ex.Message, "OK");
+            return;
+        }
+
         await Shell.Current.GoToAsync("..");
     }
 }

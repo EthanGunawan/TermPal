@@ -23,36 +23,8 @@
 
         <!-- Courses CollectionView -->
         <CollectionView Grid.Row="2"
-                        ItemsSource="{Binding Courses}"
                         x:Name="CoursesCollectionView"
-                        Margin="10">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="10"
-                            Padding="15"
-                            StrokeThickness="0"
-                            BackgroundColor="#F5F5F5">
-                        <VerticalStackLayout Spacing="5">
-                            <Label Text="{Binding Title}"
-                                   FontSize="18"
-                                   FontAttributes="Bold" />
-                            <Label Text="{Binding Room}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-                            <Label Text="{Binding Professor}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-                            <Label Text="{Binding Days}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-                            <Label Text="{Binding Time}"
-                                   FontSize="14"
-                                   TextColor="Gray" />
-                        </VerticalStackLayout>
-                    </Border>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                        ItemsSource="{Binding Courses}" />
 
         <!-- Add Course Button -->
         <Button Grid.Row="3"
