@@ -18,6 +18,7 @@
                         ItemsSource="{Binding Terms}"
                         SelectionMode="Single"
                         x:Name="TermsCollectionView"
+                        SelectionChanged="TermsCollectionView_SelectionChanged"
                         Margin="10">
             <CollectionView.ItemTemplate>
                 <DataTemplate>

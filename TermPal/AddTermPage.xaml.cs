@@ -14,7 +14,13 @@ public partial class AddTermPage : ContentPage
 
     private async void OnSaveTermButtonClicked(object sender, EventArgs e)
     {
-        // Will add functionality later
+        if (string.IsNullOrWhiteSpace(TitleEntry.Text))
+        {
+            await DisplayAlert("Error", "Please enter a semester title", "OK");
+            return;
+        }
+
+        App.TermManager.AddTerm(TitleEntry.Text);
         await Shell.Current.GoToAsync("..");
     }
 }

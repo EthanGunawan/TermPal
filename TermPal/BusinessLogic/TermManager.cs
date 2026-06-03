@@ -1,12 +1,14 @@
+using System.Collections.ObjectModel;
+
 namespace TermPal.BusinessLogic;
 
 public class TermManager
 {
-    private List<Term> _terms = new();
+    private ObservableCollection<Term> _terms = new ObservableCollection<Term>();
     private int _nextTermId = 1;
     private int _nextCourseId = 1;
 
-    public List<Term> Terms => _terms;
+    public ObservableCollection<Term> Terms => _terms;
 
     public Term AddTerm(string title)
     {
@@ -24,7 +26,15 @@ public class TermManager
 
     public bool EditTerm(int termId, string newTitle)
     {
-        var term = _terms.Find(t => t.Id == termId);
+        Term term = null;
+        for (int i = 0; i < _terms.Count; i++)
+        {
+            if (_terms[i].Id == termId)
+            {
+                term = _terms[i];
+                break;
+            }
+        }
         if (term == null)
             return false;
 
@@ -37,7 +47,15 @@ public class TermManager
 
     public bool DeleteTerm(int termId)
     {
-        var term = _terms.Find(t => t.Id == termId);
+        Term term = null;
+        for (int i = 0; i < _terms.Count; i++)
+        {
+            if (_terms[i].Id == termId)
+            {
+                term = _terms[i];
+                break;
+            }
+        }
         if (term == null)
             return false;
 
@@ -47,7 +65,12 @@ public class TermManager
 
     public Term? GetTerm(int termId)
     {
-        return _terms.Find(t => t.Id == termId);
+        for (int i = 0; i < _terms.Count; i++)
+        {
+            if (_terms[i].Id == termId)
+                return _terms[i];
+        }
+        return null;
     }
 
     public void AddCourseToTerm(int termId, Course course)

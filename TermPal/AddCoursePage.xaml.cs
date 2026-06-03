@@ -1,10 +1,41 @@
+using TermPal.BusinessLogic;
+
 namespace TermPal;
 
-public partial class AddCoursePage : ContentPage
+public partial class AddCoursePage : ContentPage, IQueryAttributable
 {
+    private int _termId;
+
     public AddCoursePage()
     {
         InitializeComponent();
+    }
+
+    // Called automatically when navigating with ...?termId=123
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        if (query == null)
+            return;
+
+        if (query.ContainsKey("termId"))
+        {
+            object value = query["termId"];
+            int id = 0;
+
+            if (value is int intValue)
+            {
+                id = intValue;
+            }
+            else if (value is string stringValue && int.TryParse(stringValue, out int parsed))
+            {
+                id = parsed;
+            }
+
+            if (id > 0)
+            {
+                _termId = id;
+            }
+        }
     }
 
     private async void OnCancelButtonClicked(object sender, EventArgs e)
@@ -14,7 +45,34 @@ public partial class AddCoursePage : ContentPage
 
     private async void OnSaveCourseButtonClicked(object sender, EventArgs e)
     {
-        // Will add functionality later
+        if (_termId <= 0)
+        {
+            await DisplayAlert("Error", "No term specified for this course", "OK");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(TitleEntry.Text))
+        {
+            await DisplayAlert("Error", "Please enter a course title", "OK");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(RoomEntry.Text))
+        {
+            await DisplayAlert("Error", "Please enter a room number", "OK");
+            return;
+        }
+
+        var course = new Course
+        {
+            Title = TitleEntry.Text,
+            Room = RoomEntry.Text,
+            Professor = ProfessorEntry.Text,
+            Days = DaysEntry.Text,
+            Time = TimePicker.Time
+        };
+
+        App.TermManager.AddCourseToTerm(_termId, course);
         await Shell.Current.GoToAsync("..");
     }
 }
