@@ -6,9 +6,9 @@ public partial class AppShell : Shell
     {
         InitializeComponent();
 
-        
         Routing.RegisterRoute(nameof(AddTermPage), typeof(AddTermPage));
         Routing.RegisterRoute(nameof(TermDetailsPage), typeof(TermDetailsPage));
         Routing.RegisterRoute(nameof(AddCoursePage), typeof(AddCoursePage));
+        Routing.RegisterRoute(nameof(TitlePage), typeof(TitlePage));
     }
 }

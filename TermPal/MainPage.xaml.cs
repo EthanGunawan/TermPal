@@ -10,21 +10,24 @@ public partial class MainPage : ContentPage
 
     private async void OnAddTermButtonClicked(object sender, EventArgs e)
     {
-        // Add mode
-        await Shell.Current.GoToAsync(nameof(AddTermPage));
+        // Navigate to AddTermPage (add mode)
+        await Navigation.PushAsync(new AddTermPage());
     }
 
     private async void TermsCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        if (e.CurrentSelection.Count > 0)
+        if (e.CurrentSelection == null || e.CurrentSelection.Count == 0)
+            return;
+
+        var selectedItem = e.CurrentSelection[0];
+        if (selectedItem is not BusinessLogic.Term term)
         {
-            var selectedItem = e.CurrentSelection[0];
-            if (selectedItem is BusinessLogic.Term term)
-            {
-                // Tap: open TermDetailsPage
-                await Shell.Current.GoToAsync($"{nameof(TermDetailsPage)}?termId={term.Id}");
-            }
+            ((CollectionView)sender).SelectedItem = null;
+            return;
         }
+
+        // Navigate to details using constructor, no Shell
+        await Navigation.PushAsync(new TermDetailsPage(term.Id));
 
         ((CollectionView)sender).SelectedItem = null;
     }
@@ -33,8 +36,7 @@ public partial class MainPage : ContentPage
     {
         if (sender is SwipeItem swipeItem && swipeItem.BindingContext is BusinessLogic.Term term)
         {
-            // Edit mode: open AddTermPage with termId
-            await Shell.Current.GoToAsync($"{nameof(AddTermPage)}?termId={term.Id}");
+            await Navigation.PushAsync(new AddTermPage(term.Id));
         }
     }
 

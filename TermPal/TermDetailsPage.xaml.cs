@@ -2,39 +2,15 @@ using TermPal.BusinessLogic;
 
 namespace TermPal;
 
-public partial class TermDetailsPage : ContentPage, IQueryAttributable
+public partial class TermDetailsPage : ContentPage
 {
     private Term _currentTerm;
-    private int _termId;
 
-    public TermDetailsPage()
+    public TermDetailsPage(int termId)
     {
         InitializeComponent();
-    }
 
-    // Called automatically when navigating with ...?termId=123
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        _termId = 0;
-        _currentTerm = null;
-
-        if (query != null && query.ContainsKey("termId"))
-        {
-            object value = query["termId"];
-            int id = 0;
-
-            if (value is int intValue)
-                id = intValue;
-            else if (value is string stringValue && int.TryParse(stringValue, out int parsed))
-                id = parsed;
-
-            if (id > 0)
-            {
-                _termId = id;
-                _currentTerm = App.TermManager.GetTerm(_termId);
-            }
-        }
-
+        _currentTerm = App.TermManager.GetTerm(termId);
         if (_currentTerm != null)
         {
             TermTitleLabel.Text      = _currentTerm.Title;
@@ -51,8 +27,7 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
             return;
         }
 
-        // Add mode: termId only
-        await Shell.Current.GoToAsync($"{nameof(AddCoursePage)}?termId={_currentTerm.Id}");
+        await Navigation.PushAsync(new AddCoursePage(_currentTerm.Id));
     }
 
     private async void CoursesCollectionView_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -65,9 +40,7 @@ public partial class TermDetailsPage : ContentPage, IQueryAttributable
             var selectedItem = e.CurrentSelection[0];
             if (selectedItem is Course course)
             {
-                // Edit mode: termId + courseId
-                await Shell.Current.GoToAsync(
-                    $"{nameof(AddCoursePage)}?termId={_currentTerm.Id}&courseId={course.Id}");
+                await Navigation.PushAsync(new AddCoursePage(_currentTerm.Id, course.Id));
             }
         }
 

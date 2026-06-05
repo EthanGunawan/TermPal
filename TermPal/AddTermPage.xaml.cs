@@ -2,68 +2,47 @@ using TermPal.BusinessLogic;
 
 namespace TermPal;
 
-public partial class AddTermPage : ContentPage, IQueryAttributable
+public partial class AddTermPage : ContentPage
 {
-    private int _termId;          // 0 = add mode
     private Term _currentTerm;    // null in add mode
 
+    // Add mode
     public AddTermPage()
     {
         InitializeComponent();
-    }
 
-    // Called automatically when navigating with ...?termId=123
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        _termId = 0;
         _currentTerm = null;
 
-        if (query != null && query.ContainsKey("termId"))
+        Title = "Add Semester";
+        SaveTermButton.Text = "Save";
+
+        var today = DateTime.Today;
+        StartDatePicker.Date = today;
+        EndDatePicker.Date   = today.AddMonths(4);
+    }
+
+    // Edit mode
+    public AddTermPage(int termId) : this()
+    {
+        _currentTerm = App.TermManager.GetTerm(termId);
+
+        if (_currentTerm != null)
         {
-            object value = query["termId"];
-            int id = 0;
+            TitleEntry.Text = _currentTerm.Title;
 
-            if (value is int intValue)
-                id = intValue;
-            else if (value is string stringValue && int.TryParse(stringValue, out int parsed))
-                id = parsed;
+            if (_currentTerm.StartDate != default)
+                StartDatePicker.Date = _currentTerm.StartDate;
+            if (_currentTerm.EndDate != default)
+                EndDatePicker.Date = _currentTerm.EndDate;
 
-            if (id > 0)
-            {
-                _termId = id;
-                _currentTerm = App.TermManager.GetTerm(_termId);
-
-                if (_currentTerm != null)
-                {
-                    // Edit mode: pre-fill fields
-                    TitleEntry.Text = _currentTerm.Title;
-
-                    if (_currentTerm.StartDate != default)
-                        StartDatePicker.Date = _currentTerm.StartDate;
-                    if (_currentTerm.EndDate != default)
-                        EndDatePicker.Date = _currentTerm.EndDate;
-
-                    Title = "Edit Semester";
-                    SaveTermButton.Text = "Update";
-                }
-            }
-        }
-
-        if (_currentTerm == null)
-        {
-            // Add mode defaults
-            Title = "Add Semester";
-            SaveTermButton.Text = "Save";
-
-            var today = DateTime.Today;
-            StartDatePicker.Date = today;
-            EndDatePicker.Date   = today.AddMonths(4);
+            Title = "Edit Semester";
+            SaveTermButton.Text = "Update";
         }
     }
 
     private async void OnCancelButtonClicked(object sender, EventArgs e)
     {
-        await Shell.Current.GoToAsync("..");
+        await Navigation.PopAsync();
     }
 
     private async void OnSaveTermButtonClicked(object sender, EventArgs e)
@@ -96,6 +75,6 @@ public partial class AddTermPage : ContentPage, IQueryAttributable
                 EndDatePicker.Date);
         }
 
-        await Shell.Current.GoToAsync("..");
+        await Navigation.PopAsync();
     }
 }

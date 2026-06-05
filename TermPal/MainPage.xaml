@@ -1,17 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="TermPal.MainPage"
              Title="TermPal">
 
     <Grid RowDefinitions="Auto, *, Auto">
-        <!-- Header -->
-        <Label Grid.Row="0"
-               Text="My Semesters"
-               FontSize="32"
-               FontAttributes="Bold"
-               HorizontalOptions="Center"
-               Margin="0,20,0,10" />
+        <!-- Header with Label and Image -->
+        <VerticalStackLayout Grid.Row="0" HorizontalOptions="Center" Margin="0,20,0,10">
+            <Label Text="My Semesters"
+                   FontSize="32"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+            
+            <Image Source="introbot.png"
+                   HeightRequest="150"
+                   WidthRequest="150"
+                   HorizontalOptions="Center"
+                   Aspect="AspectFit" />
+        </VerticalStackLayout>
 
         <!-- Terms CollectionView -->
         <CollectionView Grid.Row="1"
